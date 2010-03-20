@@ -1,0 +1,6 @@
+require 'rubygems'
+require 'test/unit'
+gem 'libxml-ruby'
+require 'xml'
+require File.dirname( __FILE__ ) + '/../lib/ooyala'
+require File.dirname( __FILE__ ) + '/ooyala_test'
