@@ -1,5 +1,3 @@
-require 'xml'
-
 module Ooyala
   class QueryRequest < Request
   

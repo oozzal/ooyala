@@ -1,3 +1,6 @@
+gem 'libxml-ruby'
+require 'xml'
+
 require File.dirname( __FILE__ ) + '/ooyala/version'
 require File.dirname( __FILE__ ) + '/ooyala/service'
 require File.dirname( __FILE__ ) + '/ooyala/request'
