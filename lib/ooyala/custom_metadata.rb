@@ -35,9 +35,8 @@ module Ooyala
       
       element = parse_xml( http_response.body ).root
       
-      if 'success' != element.attributes[ 'code' ]
-        message = "#{ element.attributes[ 'code' ] }: #{ element.attributes[ 'message' ] }"
-        raise Error.new( message )
+      if 'success' != element[ 'code' ]
+        raise Error.new( "#{ element[ 'code' ] }: #{ element[ 'message' ] }" )
       end
     end
   end

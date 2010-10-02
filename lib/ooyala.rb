@@ -1,5 +1,5 @@
-gem 'libxml-ruby'
-require 'xml'
+gem 'nokogiri'
+require 'nokogiri'
 
 require File.dirname( __FILE__ ) + '/ooyala/version'
 require File.dirname( __FILE__ ) + '/ooyala/service'

@@ -18,5 +18,5 @@ Gem::Specification.new do |s|
   s.files        = Dir.glob( 'lib/**/*' )
   s.require_path = 'lib'
 
-  s.add_dependency 'libxml-ruby', '>= 1.1.3'
+  s.add_dependency 'nokogiri'
 end

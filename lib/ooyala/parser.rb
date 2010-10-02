@@ -5,8 +5,8 @@ module Ooyala
     end
   
     def content( child_name )
-      node = @element.find_first( child_name )
-      node && node.first && node.first.content
+      node = @element.at( child_name )
+      node && node.content
     end
 
     def string( child_name )
@@ -24,7 +24,7 @@ module Ooyala
     end
 
     def attr_content( attr_name )
-      @element.attributes[ attr_name ]
+      @element[ attr_name ]
     end
 
     def attr_int( attr_name )

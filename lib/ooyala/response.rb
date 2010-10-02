@@ -19,8 +19,7 @@ module Ooyala
         raise Error.new( body )
       end
 
-      # XML::Document
-      XML::Parser.string( body ).parse
+      Nokogiri::XML::Document.parse( body )
     end
     
   end

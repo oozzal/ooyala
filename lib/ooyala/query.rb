@@ -42,7 +42,7 @@ module Ooyala
       @total_results = parser.attr_int( 'totalResults' )
       @items = []
 
-      element.find( 'item' ).each do |el_item|
+      element.xpath( './item' ).each do |el_item|
         @items << QueryItem.new( el_item )
       end
     end
@@ -76,7 +76,7 @@ module Ooyala
       @hosted_at = parser.string( 'hostedAt' )
       @updated_at = parser.time( 'updatedAt' )
       
-      if ( metadata = element.find_first( 'metadata' ) )
+      if ( metadata = element.at( './metadata' ) )
         parse_metadata metadata
       end
     end  
@@ -89,8 +89,8 @@ module Ooyala
     # </metadata>
       
     def parse_metadata( element )
-      element.find( 'metadataItem' ).each do |item|
-        @metadata[ item.attributes[ 'name' ] ] = item.attributes[ 'value' ]
+      element.xpath( './metadataItem' ).each do |item|
+        @metadata[ item[ 'name' ] ] = item[ 'value' ]
       end
     end
   end

@@ -69,12 +69,12 @@ module Ooyala
       @requested_width = parser.attr_int( 'requestedWidth' )
       @estimated_width = parser.attr_int( 'estimatedWidth' )
       
-      unless ( promo_node = element.find_first( 'promoThumbnail' ) )
+      unless ( promo_node = element.at( './promoThumbnail' ) )
         raise ParseError.new( 'No promoThumbnail node found in thumbnail query response' )
       end
       @promo_thumbnail_url = promo_node.content
 
-      @thumbnails = element.find( 'thumbnail' ).collect do |thumbnail_node|
+      @thumbnails = element.xpath( './thumbnail' ).collect do |thumbnail_node|
         Thumbnail.new( thumbnail_node )
       end
     end
