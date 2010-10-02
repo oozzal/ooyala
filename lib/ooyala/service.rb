@@ -9,7 +9,7 @@ module Ooyala
     end
 
     def submit( request )
-      path = "/partner/#{ request.type }"
+      path = "/partner/#{ request.path_segment }"
       query = build_query( request.params )
 
       http_response = Net::HTTP.start( HOST, PORT ) do |http|

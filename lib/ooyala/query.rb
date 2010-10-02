@@ -9,7 +9,7 @@ module Ooyala
       QueryResponse
     end
 
-    def type
+    def path_segment
       'query'
     end
 

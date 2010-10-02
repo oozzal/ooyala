@@ -10,7 +10,7 @@ module Ooyala
       AttributeUpdateResponse
     end
 
-    def type
+    def path_segment
       'edit'
     end
 

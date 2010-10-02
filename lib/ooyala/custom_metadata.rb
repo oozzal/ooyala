@@ -10,7 +10,7 @@ module Ooyala
       CustomMetadataResponse
     end
 
-    def type
+    def path_segment
       'set_metadata'
     end
 

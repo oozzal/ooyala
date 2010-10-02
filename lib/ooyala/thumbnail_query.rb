@@ -16,7 +16,7 @@ module Ooyala
       ThumbnailQueryResponse
     end
 
-    def type
+    def path_segment
       'thumbnails'
     end
 
