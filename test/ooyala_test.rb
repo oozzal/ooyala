@@ -9,7 +9,7 @@ class OoyalaTest < Test::Unit::TestCase
     @service = Ooyala::Service.new( PARTNER_CODE, SECRET_CODE )
     @client = Ooyala::Client.new( @service )
   end
-  
+
   # Test::Unit requires at least one test in a test class
   def default_test
   end

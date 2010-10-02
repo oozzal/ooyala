@@ -1,6 +1,6 @@
 module Ooyala
   class CustomMetadataRequest < Request
-  
+
     def initialize( embed_code, pairs = {} )
       @embed_code = embed_code
       @pairs = pairs
@@ -12,8 +12,8 @@ module Ooyala
 
     def type
       'set_metadata'
-    end  
-    
+    end
+
   private
 
     def params_internal
@@ -22,7 +22,7 @@ module Ooyala
   end
 
   class CustomMetadataResponse < Response
-  
+
     # From Ooyala docs:
     # <?xml version="1.0" encoding="UTF-8"?>
     # <result code="success">ok</result>
@@ -32,9 +32,9 @@ module Ooyala
 
     def initialize( http_response )
       super
-      
+
       element = parse_xml( http_response.body ).root
-      
+
       if 'success' != element[ 'code' ]
         raise Error.new( "#{ element[ 'code' ] }: #{ element[ 'message' ] }" )
       end

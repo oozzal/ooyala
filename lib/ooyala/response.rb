@@ -1,8 +1,8 @@
 module Ooyala
-  
+
   # abstract
   class Response
-    
+
     def initialize( http_response )
     end
 
@@ -11,7 +11,7 @@ module Ooyala
         request.response_class.new( http_response )
       end
     end
-    
+
   private
 
     def parse_xml( body )
@@ -21,6 +21,6 @@ module Ooyala
 
       Nokogiri::XML::Document.parse( body )
     end
-    
+
   end
 end

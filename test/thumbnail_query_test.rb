@@ -6,7 +6,7 @@ class ThumbnailQueryTest < OoyalaTest
 
     request = ThumbnailQueryRequest.new( item.embed_code )
     response = request.submit( @service )
-    
+
     assert response.is_a?( ThumbnailQueryResponse )
     assert_equal item.embed_code, response.embed_code
     assert_not_nil response.promo_thumbnail_url

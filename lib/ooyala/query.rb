@@ -1,6 +1,6 @@
 module Ooyala
   class QueryRequest < Request
-  
+
     def initialize( criteria = {} )
       @criteria = criteria
     end
@@ -11,8 +11,8 @@ module Ooyala
 
     def type
       'query'
-    end  
-    
+    end
+
   private
 
     def params_internal
@@ -26,16 +26,16 @@ module Ooyala
       :next_page_id,
       :size,
       :items
-  
+
     # element: an XML <list/> element
     def initialize( http_response )
       super
-      
+
       document = parse_xml( http_response.body )
       element = document.root
 
       parser = Parser.new( element )
-    
+
       @page_id = parser.attr_int( 'pageID' )
       @next_page_id = parser.attr_int( 'nextPageID' )
       @size = parser.attr_int( 'size' )
@@ -60,7 +60,7 @@ module Ooyala
       :length, # duration
       :hosted_at,
       :metadata
-      
+
     def initialize( element )
       parser = Parser.new( element )
 
@@ -75,19 +75,19 @@ module Ooyala
       @length = parser.int( 'length' )
       @hosted_at = parser.string( 'hostedAt' )
       @updated_at = parser.time( 'updatedAt' )
-      
+
       if ( metadata = element.at( './metadata' ) )
         parse_metadata metadata
       end
-    end  
-    
+    end
+
   private
 
     # <metadata>
     #   <metadataItem name="director" value="Francis Ford Coppola"/>
     #   <metadataItem name="actor" value="Marlon Brando"/>
     # </metadata>
-      
+
     def parse_metadata( element )
       element.xpath( './metadataItem' ).each do |item|
         @metadata[ item[ 'name' ] ] = item[ 'value' ]
@@ -96,14 +96,14 @@ module Ooyala
   end
 
   class QueryPager
-  
+
     def initialize( service, criteria = {}, page_size = 500 )
       @service = service
       @criteria = criteria
       @page_size = page_size
       reset
     end
-  
+
     def reset
       @page_id = 0
       @eof = false
@@ -112,7 +112,7 @@ module Ooyala
     def eof?
       @eof
     end
-    
+
     def succ
       raise 'EOF' if eof?
 
@@ -129,25 +129,25 @@ module Ooyala
       else
         @eof = true
       end
-    
+
       response
     end
-  
+
     def each_page
       raise "No block" unless block_given?
       reset
       yield succ until eof?
-    end  
+    end
   end
-  
+
   class QueryIterator
     include Enumerable
-    
+
     def initialize( service, criteria = {} )
       @service = service
       @criteria = criteria
     end
-    
+
     def each
       QueryPager.new( @service, @criteria, 500 ).each_page do |page|
         page.items.each do |item|
@@ -155,5 +155,5 @@ module Ooyala
         end
       end
     end
-  end  
+  end
 end

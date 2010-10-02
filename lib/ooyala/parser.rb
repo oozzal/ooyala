@@ -3,7 +3,7 @@ module Ooyala
     def initialize( element )
       @element = element
     end
-  
+
     def content( child_name )
       node = @element.at( child_name )
       node && node.content
@@ -12,7 +12,7 @@ module Ooyala
     def string( child_name )
       content child_name
     end
-  
+
     def int( child_name )
       content = content( child_name )
       content && content.to_i
@@ -31,7 +31,7 @@ module Ooyala
       content = attr_content( attr_name )
       content && content.to_i
     end
-  
+
     def attr_string( attr_name )
       attr_content attr_name
     end
