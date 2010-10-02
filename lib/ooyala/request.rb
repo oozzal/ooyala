@@ -1,8 +1,3 @@
-require 'base64'
-require 'cgi'
-require 'digest/sha2'
-require 'net/http'
-
 module Ooyala
 
   # abstract
