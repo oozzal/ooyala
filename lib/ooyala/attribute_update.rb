@@ -17,7 +17,7 @@ module Ooyala
   private
 
     def params_internal
-      @params.dup.merge 'embedCode' => @embed_code
+      @params.merge 'embedCode' => @embed_code
     end
   end
 
