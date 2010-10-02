@@ -19,5 +19,6 @@ Gem::Specification.new do |s|
   s.require_path = 'lib'
 
   s.add_dependency 'nokogiri'
+  s.add_dependency 'activesupport'
   s.add_development_dependency 'rdoc'
 end

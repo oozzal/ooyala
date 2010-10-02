@@ -9,6 +9,18 @@ class AttributeUpdateTest < OoyalaTest
     end
   end
 
+  def test_raises_on_invalid_status
+    assert_raise ArgumentError do
+      AttributeUpdateRequest.new 'embed_code', :status => :invalid
+    end
+  end
+
+  def test_raises_on_invalid_attribute
+    assert_raise ArgumentError do
+      AttributeUpdateRequest.new 'embed_code', :invalid_attr => nil
+    end
+  end
+
   def test_sets_title_and_description
     request = QueryRequest.new( 'limit' => 1 )
     item = @service.submit( request ).items.first
@@ -18,10 +30,10 @@ class AttributeUpdateTest < OoyalaTest
     description = rand( 1000000 ).to_s
     hosted_at = "http://example.com/#{ rand( 100000 ) }"
 
-    request = AttributeUpdateRequest.new( embed_code, {
-      'title' => title,
-      'description' => description,
-      'hostedAt' => hosted_at } )
+    request = AttributeUpdateRequest.new embed_code,
+      :title => title,
+      :description => description,
+      :hosted_at => hosted_at
 
     @service.submit request
 

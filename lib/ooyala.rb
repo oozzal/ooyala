@@ -6,6 +6,9 @@ require 'net/http'
 gem 'nokogiri'
 require 'nokogiri'
 
+gem 'activesupport'
+require 'active_support'
+
 require File.dirname( __FILE__ ) + '/ooyala/version'
 require File.dirname( __FILE__ ) + '/ooyala/service'
 require File.dirname( __FILE__ ) + '/ooyala/request'
