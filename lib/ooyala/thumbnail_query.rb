@@ -1,19 +1,32 @@
 module Ooyala
   class ThumbnailQueryRequest < Request
 
-    # options
-    #   desired_width
-    #   desired_height
-    #   min_index
-    #   max_index
+    # Embed code of the object for which to request thumbnails
+    attr_accessor :embed_code
 
-    def initialize( embed_code, options = {} )
-      @embed_code = embed_code
-      @options = options
-    end
+    # Together with +max_index+, specifies the range of thumbnails to return
+    attr_accessor :min_index
 
-    def response_class
-      ThumbnailQueryResponse
+    # Together with +min_index+, specifies the range of thumbnails to return
+    attr_accessor :max_index
+
+    # Desired width of the returned thumbnails. Ooyala may return images
+    # with a greater width.
+    attr_accessor :desired_width
+
+    # Desired height of the returned thumbnails. Ooyala may return images
+    # with a greater height.
+    attr_accessor :desired_height
+
+    def initialize( embed_code, params = {} )
+      params.assert_valid_keys :desired_width, :desired_height, :min_index,
+        :max_index
+
+      self.embed_code = embed_code
+      self.desired_width = params[ :desired_width ] || 800
+      self.desired_height = params[ :desired_height ] || 600
+      self.min_index = params[ :min_index ] || 0
+      self.max_index = params[ :max_index ] || 255
     end
 
     def path_segment
@@ -22,75 +35,60 @@ module Ooyala
 
   private
 
-    def range_string
-      min = @options[ :min_index ] || 0
-      max = @options[ :max_index ] || 255
-      "#{ min }-#{ max }"
-    end
-
-    def resolution_string
-      width = @options[ :desired_width ] || 800
-      height = @options[ :desired_height ] || 600
-      "#{ width }x#{ height }"
-    end
-
     def params_internal
       {
-        'embedCode' => @embed_code,
-        'range' => range_string,
-        'resolution' => resolution_string
+        'embedCode' => embed_code,
+        'range' => "#{ min_index }-#{ max_index }",
+        'resolution' => "#{ desired_width }x#{ desired_height }"
       }
     end
-  end
 
-  # <thumbnails estimatedWidth="640" requestedWidth="800" embedCode="Rrd2w6PBRFJ7UIRzRv-JlDgfrsjK4TBc" aspectRatio="4/3">
-  #   <thumbnail timestamp="0" index="0">http://ak.c.ooyala.com/Rrd2w6PBRFJ7UIRzRv-JlDgfrsjK4TBc/Ut_HKthATH4eww8X5hMDoxOjBrOw-uIx</thumbnail>
-  #   <promoThumbnail>http://ak.c.ooyala.com/Rrd2w6PBRFJ7UIRzRv-JlDgfrsjK4TBc/Ut_HKthATH4eww8X5hMDoxOjBrOw-uIx</promoThumbnail>
-  # </thumbnails>
+  end
 
   class ThumbnailQueryResponse < Response
 
-    attr_reader :aspect_ratio
-    attr_reader :embed_code
-    attr_reader :requested_width
-    attr_reader :estimated_width
-    attr_reader :promo_thumbnail_url
     attr_reader :thumbnails
 
-    def initialize( http_response )
-      super
+    # Embed code of the video from which thumbnails were created
+    attr_accessor :embed_code
 
-      document = parse_xml( http_response.body )
-      element = document.root
-      parser = Parser.new( element )
+    # Aspect ratio of thumbnails
+    attr_accessor :aspect_ratio
 
-      @aspect_ratio = parser.attr_string( 'aspectRatio' )
-      @embed_code = parser.attr_string( 'embedCode' )
-      @requested_width = parser.attr_int( 'requestedWidth' )
-      @estimated_width = parser.attr_int( 'estimatedWidth' )
+    # URL of the "promo thumbnail," i.e. the one that is displayed in the player
+    attr_accessor :promo_thumbnail_url
 
-      unless ( promo_node = element.at( './promoThumbnail' ) )
-        raise ParseError.new( 'No promoThumbnail node found in thumbnail query response' )
-      end
-      @promo_thumbnail_url = promo_node.content
+    attr_accessor :requested_width
+    attr_accessor :estimated_width
 
-      @thumbnails = element.xpath( './thumbnail' ).collect do |thumbnail_node|
-        Thumbnail.new( thumbnail_node )
+    def initialize( attrs = {} )
+      attrs.assert_valid_keys :embed_code, :aspect_ratio, :requested_width,
+        :estimated_width, :promo_thumbnail_url
+
+      @thumbnails = []
+
+      attrs.each do |k, v|
+        send "#{k}=", v
       end
     end
+
   end
 
   class Thumbnail
-    attr_reader :url,
-      :timestamp,
-      :index
 
-    # <thumbnail timestamp="154466" index="8">http://ak.c.ooyala.com/FzOXU4OkyvK5QLT18dYmC__5FW4u1oB9/hiiSH5uo2s7SFpr35jODoxOjRnO8wIPJ</thumbnail>
-    def initialize( element )
-      parser = Parser.new( element )
-      @url = element.content
-      @timestamp = parser.attr_int( 'timestamp' )
-      @index = parser.attr_int( 'index' )
+    # URL of the thumbnail image
+    attr_accessor :url
+
+    # Time in the video, in milliseconds, at which the thumbnail was created
+    attr_accessor :timestamp
+
+    # Zero-based index (ordinal) of the thumbnail
+    attr_accessor :index
+
+    def initialize( attrs = {} )
+      attrs.each do |k, v|
+        send "#{k}=", v
+      end
     end
   end
 

@@ -16,11 +16,7 @@ module Ooyala
         http.get( "#{ path }?#{ query }" )
       end
 
-      if http_response.is_a?( Net::HTTPServerError )
-        raise ServerError
-      end
-
-      Response.parse( http_response, request )
+      ResponseParser.create( request ).parse http_response
     end
 
   private

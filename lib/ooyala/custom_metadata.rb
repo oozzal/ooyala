@@ -1,13 +1,15 @@
 module Ooyala
   class CustomMetadataRequest < Request
 
-    def initialize( embed_code, pairs = {} )
-      @embed_code = embed_code
-      @pairs = pairs
-    end
+    # Embed code of the object to update
+    attr_accessor :embed_code
 
-    def response_class
-      CustomMetadataResponse
+    # Name-value pairs of attributes to set (+Hash+)
+    attr_accessor :attrs
+
+    def initialize( embed_code, attrs = {} )
+      self.embed_code = embed_code
+      self.attrs = attrs
     end
 
     def path_segment
@@ -17,27 +19,11 @@ module Ooyala
   private
 
     def params_internal
-      @pairs.dup.merge 'embedCode' => @embed_code
+      attrs.merge 'embedCode' => embed_code
     end
+
   end
 
   class CustomMetadataResponse < Response
-
-    # From Ooyala docs:
-    # <?xml version="1.0" encoding="UTF-8"?>
-    # <result code="success">ok</result>
-    # When the request is successful, "code" will be "success". When the
-    # request is unsuccessful, "code" will be an HTTP status code indicating
-    # the reason for the failure.
-
-    def initialize( http_response )
-      super
-
-      element = parse_xml( http_response.body ).root
-
-      if 'success' != element[ 'code' ]
-        raise Error.new( "#{ element[ 'code' ] }: #{ element[ 'message' ] }" )
-      end
-    end
   end
 end

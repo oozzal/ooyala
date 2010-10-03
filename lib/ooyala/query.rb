@@ -5,10 +5,6 @@ module Ooyala
       @criteria = criteria
     end
 
-    def response_class
-      QueryResponse
-    end
-
     def path_segment
       'query'
     end
@@ -22,35 +18,27 @@ module Ooyala
 
   class QueryResponse < Response
 
-    attr_reader :page_id,
+    attr_reader :items
+
+    attr_accessor :page_id,
       :next_page_id,
       :size,
-      :items
+      :total_results
 
-    # element: an XML <list/> element
-    def initialize( http_response )
-      super
-
-      document = parse_xml( http_response.body )
-      element = document.root
-
-      parser = Parser.new( element )
-
-      @page_id = parser.attr_int( 'pageID' )
-      @next_page_id = parser.attr_int( 'nextPageID' )
-      @size = parser.attr_int( 'size' )
-      @total_results = parser.attr_int( 'totalResults' )
+    def initialize( attrs = {} )
       @items = []
-
-      element.xpath( './item' ).each do |el_item|
-        @items << QueryItem.new( el_item )
+      attrs.each do |k, v|
+        send "#{k}=", v
       end
     end
 
   end
 
   class QueryItem
-    attr_reader :embed_code,
+
+    attr_reader :metadata
+
+    attr_accessor :embed_code,
       :title,
       :description,
       :status,
@@ -59,38 +47,12 @@ module Ooyala
       :size,
       :length, # duration
       :hosted_at,
-      :metadata
+      :updated_at
 
-    def initialize( element )
-      parser = Parser.new( element )
-
+    def initialize( attrs = {} )
       @metadata = {}
-      @embed_code = parser.string( 'embedCode' )
-      @title = parser.string( 'title' )
-      @description = parser.string( 'description' )
-      @status = parser.string( 'status' )
-      @width = parser.int( 'width' )
-      @height = parser.int( 'height' )
-      @size = parser.int( 'size' )
-      @length = parser.int( 'length' )
-      @hosted_at = parser.string( 'hostedAt' )
-      @updated_at = parser.time( 'updatedAt' )
-
-      if ( metadata = element.at( './metadata' ) )
-        parse_metadata metadata
-      end
-    end
-
-  private
-
-    # <metadata>
-    #   <metadataItem name="director" value="Francis Ford Coppola"/>
-    #   <metadataItem name="actor" value="Marlon Brando"/>
-    # </metadata>
-
-    def parse_metadata( element )
-      element.xpath( './metadataItem' ).each do |item|
-        @metadata[ item[ 'name' ] ] = item[ 'value' ]
+      attrs.each do |k, v|
+        send "#{k}=", v
       end
     end
   end

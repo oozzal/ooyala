@@ -7,10 +7,6 @@ module Ooyala
       service.submit self
     end
 
-    def response_class
-      raise NotImplementedError
-    end
-
     def params
       params = params_internal.dup
 

@@ -23,8 +23,8 @@ module Ooyala
     attr_accessor :hosted_at
 
     def initialize( embed_code, attrs = {} )
-      attrs.assert_valid_keys :title, :description, :flight_end,
-        :flight_start, :status, :hosted_at
+      attrs.assert_valid_keys :title, :description, :flight_start,
+        :flight_end, :status, :hosted_at
 
       self.embed_code = embed_code
 
@@ -37,10 +37,6 @@ module Ooyala
       unless [ nil, :live, :paused, :deleted ].include?( value )
         raise ArgumentError, "Invalid status: '#{ value }'"
       end
-    end
-
-    def response_class # :nodoc:
-      AttributeUpdateResponse
     end
 
     def path_segment # :nodoc:
@@ -64,16 +60,6 @@ module Ooyala
   end
 
   class AttributeUpdateResponse < Response
-
-    def initialize( http_response )
-      super
-
-      body = http_response.body
-
-      unless body && body == 'ok'
-        raise Error.new( body )
-      end
-    end
-
   end
+
 end

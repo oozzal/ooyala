@@ -4,7 +4,7 @@ class AttributeUpdateTest < OoyalaTest
 
   def test_raises_on_invalid_embed_code
     request = AttributeUpdateRequest.new( 'cheese' )
-    assert_raise( Ooyala::Error ) do
+    assert_raise( Ooyala::ItemNotFound ) do
       request.submit( @service )
     end
   end
