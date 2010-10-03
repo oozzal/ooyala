@@ -7,19 +7,30 @@ module Ooyala
     # Name-value pairs of attributes to set (+Hash+)
     attr_accessor :attrs
 
-    def initialize( embed_code, attrs = {} )
+    # Names of attributes to delete (+Enumerable+)
+    attr_accessor :delete_names
+
+    def initialize( embed_code, attrs = {}, delete_names = [] )
       self.embed_code = embed_code
       self.attrs = attrs
+      self.delete_names = delete_names
     end
 
   private
 
     def params_internal
-      attrs.merge 'embedCode' => embed_code
+      params = attrs.merge 'embedCode' => embed_code
+
+      unless delete_names.empty?
+        params[ 'delete' ] = delete_names.join( "\0" )
+      end
+
+      params
     end
 
   end
 
   class CustomMetadataResponse < Response
   end
+
 end

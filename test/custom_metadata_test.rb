@@ -9,6 +9,33 @@ class CustomMetadataTest < OoyalaTest
     end
   end
 
+  def test_deletes_single
+    key, value = 'test_key', 'test_value'
+    embed_code = find_item.embed_code
+
+    @client.update_metadata embed_code, key => value
+    assert_equal value, @client.find( embed_code ).metadata[ key ]
+
+    CustomMetadataRequest.new( embed_code, {}, [ key ] ).submit( @service )
+    assert_nil @client.find( embed_code ).metadata[ key ]
+  end
+
+  def test_deletes_multiple
+    key1, value1 = 'key1', 'value1'
+    key2, value2 = 'key2', 'value2'
+    embed_code = find_item.embed_code
+
+    @client.update_metadata embed_code, { key1 => value1, key2 => value2 }
+    item = @client.find( embed_code )
+    assert_equal value1, item.metadata[ key1 ]
+    assert_equal value2, item.metadata[ key2 ]
+
+    CustomMetadataRequest.new( embed_code, {}, [ key1, key2 ] ).submit( @service )
+    item = @client.find( embed_code )
+    assert_nil item.metadata[ key1 ]
+    assert_nil item.metadata[ key2 ]
+  end
+
   def test_sets_single_pair
     key, value = 'test_key', 'test_value'
     embed_code = find_item.embed_code

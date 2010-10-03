@@ -20,8 +20,8 @@ module Ooyala
       AttributeUpdateRequest.new( embed_code, params ).submit( @service )
     end
 
-    def update_metadata( embed_code, attrs = {} )
-      CustomMetadataRequest.new( embed_code, attrs ).submit( @service )
+    def update_metadata( embed_code, attrs = {}, delete_names = [] )
+      CustomMetadataRequest.new( embed_code, attrs, delete_names ).submit( @service )
     end
   end
 end
