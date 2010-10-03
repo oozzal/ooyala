@@ -16,18 +16,6 @@ module Ooyala
       self.delete_names = delete_names
     end
 
-  private
-
-    def params_internal
-      params = attrs.merge 'embedCode' => embed_code
-
-      unless delete_names.empty?
-        params[ 'delete' ] = delete_names.join( "\0" )
-      end
-
-      params
-    end
-
   end
 
   class CustomMetadataResponse < Response

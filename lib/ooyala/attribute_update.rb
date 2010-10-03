@@ -39,20 +39,6 @@ module Ooyala
       end
     end
 
-  private
-
-    def params_internal
-      {
-        'embedCode' => @embed_code,
-        'title' => title,
-        'description' => description,
-        'flightEnd' => flight_end && flight_end.iso8601,
-        'flightStart' => flight_start && flight_start.iso8601,
-        'status' => status && status.to_s,
-        'hostedAt' => hosted_at
-      }.reject { |k, v| v.nil? }
-    end
-
   end
 
   class AttributeUpdateResponse < Response

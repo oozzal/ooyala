@@ -119,51 +119,6 @@ module Ooyala
       end
       @order_direction = value
     end
-
-  private
-
-    def params_internal
-      params = {
-        'contentType' => content_type && content_type.to_s,
-        'description' => description,
-        'title' => title,
-        'text' => title_or_description,
-        'embedCode' => comma_list_param( embed_codes ),
-        'fields' => fields_param,
-        'includeDeleted' => return_deleted ? 'true' : 'false',
-        'limit' => limit && limit.to_s,
-        'pageID' => page && page.to_s,
-        'queryMode' => mode && mode.to_s,
-        'statistics' => comma_list_param( statistics_time_periods ),
-        'status' => comma_list_param( statuses ),
-        'updatedAfter' => updated_after && updated_after.to_i,
-        'orderBy' => order_param
-      }.reject { |k, v| v.nil? }
-
-      labels.each do |label|
-        params[ "label[#{ label }]" ] = ''
-      end
-
-      params
-    end
-
-    def comma_list_param( array )
-      array.empty? ? nil : array.join( ',' )
-    end
-
-    def fields_param
-      fields = []
-      fields << 'labels' if return_labels
-      fields << 'metadata' if return_metadata
-      fields << 'ratings' if return_ratings
-      fields.empty? ? nil : fields.join( ',' )
-    end
-
-    def order_param
-      return nil unless @order_by && @order_direction
-      "#{ @order_by == :uploaded_at ? 'uploadedAt' : 'updatedAt' }, #{ @order_direction }"
-    end
-
   end
 
   class QueryResponse < Response
