@@ -18,7 +18,4 @@ module Ooyala
 
   end
 
-  class CustomMetadataResponse < Response
-  end
-
 end

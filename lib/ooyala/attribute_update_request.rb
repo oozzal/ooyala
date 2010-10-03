@@ -41,7 +41,4 @@ module Ooyala
 
   end
 
-  class AttributeUpdateResponse < Response
-  end
-
 end
