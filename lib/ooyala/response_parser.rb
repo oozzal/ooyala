@@ -189,7 +189,22 @@ module Ooyala
 
   class ThumbnailQueryResponseParser < ResponseParser
 
+    # =Success
+    # HTTP 200, response body "ok"
+    #
+    # =Failure
+    # HTTP 200, response body containing an error message, e.g. "unknown
+    # content".
+    #
     def parse( http_response )
+      unless http_response.is_a?( Net::HTTPOK )
+        raise_unrecognized_response http_response
+      end
+
+      unless xml_document?( http_response.body )
+        raise Error, http_response.body
+      end
+
       el = parse_xml( http_response.body ).root
 
       response = ThumbnailQueryResponse.new :embed_code => parse_string_attr( el, 'embedCode' ),

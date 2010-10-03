@@ -1,6 +1,14 @@
 require File.dirname( __FILE__ ) + '/helper'
 
 class ThumbnailQueryTest < OoyalaTest
+
+  def test_raises_on_invalid_embed_code
+    request = ThumbnailQueryRequest.new( 'invalid_embed_code' )
+    assert_raise( Ooyala::Error ) do
+      request.submit( @service )
+    end
+  end
+
   def test_request_returns_promo_and_thumbnails
     item = @client.query( :limit => 1, :content_type => :Video ).items.first
 
