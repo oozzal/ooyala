@@ -12,10 +12,6 @@ module Ooyala
       self.attrs = attrs
     end
 
-    def path_segment
-      'set_metadata'
-    end
-
   private
 
     def params_internal

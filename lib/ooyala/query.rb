@@ -5,10 +5,6 @@ module Ooyala
       @criteria = criteria
     end
 
-    def path_segment
-      'query'
-    end
-
   private
 
     def params_internal

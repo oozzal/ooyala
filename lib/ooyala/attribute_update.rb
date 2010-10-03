@@ -39,10 +39,6 @@ module Ooyala
       end
     end
 
-    def path_segment # :nodoc:
-      'edit'
-    end
-
   private
 
     def params_internal

@@ -9,7 +9,7 @@ module Ooyala
     end
 
     def submit( request )
-      path = "/partner/#{ request.path_segment }"
+      path = "/partner/#{ path_segment( request ) }"
       query = build_query( request.params )
 
       http_response = Net::HTTP.start( HOST, PORT ) do |http|
@@ -20,6 +20,21 @@ module Ooyala
     end
 
   private
+
+    def path_segment( request )
+      case request
+      when AttributeUpdateRequest
+        'edit'
+      when CustomMetadataRequest
+        'set_metadata'
+      when QueryRequest
+        'query'
+      when ThumbnailQueryRequest
+        'thumbnails'
+      else
+        raise Error, "Can't get path segment for request of type '#{ request.class.name }'"
+      end
+    end
 
     def build_query( params )
       params = params.merge :pcode => @partner_code,

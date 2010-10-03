@@ -17,11 +17,6 @@ module Ooyala
       params
     end
 
-    # the path segment of the request URL, e.g. 'query'
-    def path_segment
-      raise NotImplementedError
-    end
-
   private
 
     # virtual

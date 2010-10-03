@@ -29,10 +29,6 @@ module Ooyala
       self.max_index = params[ :max_index ] || 255
     end
 
-    def path_segment
-      'thumbnails'
-    end
-
   private
 
     def params_internal
