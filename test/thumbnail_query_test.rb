@@ -4,7 +4,7 @@ class ThumbnailQueryTest < OoyalaTest
 
   def test_raises_on_invalid_embed_code
     request = ThumbnailQueryRequest.new( 'invalid_embed_code' )
-    assert_raise( Ooyala::Error ) do
+    assert_raise( Ooyala::ItemNotFound ) do
       request.submit( @service )
     end
   end

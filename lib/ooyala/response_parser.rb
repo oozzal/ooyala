@@ -68,47 +68,60 @@ module Ooyala
       node[ attr_name ]
     end
 
+    # "Standard" responses always have HTTP status code 200. The body
+    # contains an XML document on success, an error message on failure.
+    # This method raises on error, returns the root of a parsed XML document
+    # on success.
+    #
+    def parse_standard_response( http_response )
+      unless http_response.is_a?( Net::HTTPOK )
+        raise_unrecognized_response http_response
+      end
+
+      body = http_response.body
+
+      unless xml_document?( body )
+        raise_from_error_string body
+      end
+
+      parse_xml( body ).root
+    end
+
+    def raise_from_error_string( error_string )
+      case error_string
+      when 'unknown content'
+        raise ItemNotFound
+      else
+        raise Error, error_string
+      end
+    end
+
     def raise_unrecognized_response( http_response )
       raise ParseError, "Unrecognized HTTP response code: '#{ http_response.code }'"
     end
-
   end
 
   class AttributeUpdateResponseParser < ResponseParser
-
-    # =Success
-    # HTTP 200, response body "ok"
-    #
-    # =Failure
-    # HTTP 200, response body containing an error message, e.g. "unknown
-    # content".
-    #
     def parse( http_response )
-      case http_response
-      when Net::HTTPOK
-        case http_response.body
-        when 'ok'
-          AttributeUpdateResponse.new
-        when 'unknown content'
-          raise ItemNotFound
-        else
-          raise Error, http_response.body
-        end
-      else
+      unless http_response.is_a?( Net::HTTPOK )
         raise_unrecognized_response http_response
       end
+
+      unless 'ok' == http_response.body
+        raise_from_error_string http_response.body
+      end
+
+      AttributeUpdateResponse.new
     end 
   end
 
   class CustomMetadataResponseParser < ResponseParser
 
-    # =Success
-    # HTTP 200 with response body:
+    # Success: HTTP 200 with response body:
     #   <?xml version="1.0"?>
     #   <result code="success"/>
     #
-    # =Failure
-    # HTTP 400 (Bad request) with response body:
+    # Failure: HTTP 400 (Bad request) with response body:
     #   <?xml version="1.0"?>
     #   <result code="400 Bad Request" message="Invalid embed code."/>
     #
@@ -127,23 +140,8 @@ module Ooyala
 
   class QueryResponseParser < ResponseParser
 
-    # = Success
-    # HTTP 200 with response body an XML document
-    #
-    # = Failure
-    # HTTP 200 with response body an error string:
-    #   Invalid pageID parameter: -1
-    #
     def parse( http_response )
-      unless http_response.is_a?( Net::HTTPOK )
-        raise_unrecognized_response http_response
-      end
-
-      unless xml_document?( http_response.body )
-        raise Error, http_response.body
-      end
-
-      el = parse_xml( http_response.body ).root
+      el = parse_standard_response( http_response )
 
       response = QueryResponse.new :page_id => parse_int_attr( el, 'pageID' ),
         :next_page_id => parse_int_attr( el, 'nextPageID' ),
@@ -189,23 +187,8 @@ module Ooyala
 
   class ThumbnailQueryResponseParser < ResponseParser
 
-    # =Success
-    # HTTP 200, response body "ok"
-    #
-    # =Failure
-    # HTTP 200, response body containing an error message, e.g. "unknown
-    # content".
-    #
     def parse( http_response )
-      unless http_response.is_a?( Net::HTTPOK )
-        raise_unrecognized_response http_response
-      end
-
-      unless xml_document?( http_response.body )
-        raise Error, http_response.body
-      end
-
-      el = parse_xml( http_response.body ).root
+      el = parse_standard_response( http_response )
 
       response = ThumbnailQueryResponse.new :embed_code => parse_string_attr( el, 'embedCode' ),
         :aspect_ratio => parse_string_attr( el, 'aspectRatio' ),
