@@ -5,7 +5,7 @@ module Ooyala
     end
 
     def find( embed_code )
-      query( 'embedCode' => embed_code ).items.first || raise( ItemNotFound )
+      query( :embed_code => embed_code ).items.first || raise( ItemNotFound )
     end
 
     def query( criteria )
@@ -20,8 +20,8 @@ module Ooyala
       AttributeUpdateRequest.new( embed_code, params ).submit( @service )
     end
 
-    def update_metadata( embed_code, pairs )
-      CustomMetadataRequest.new( embed_code, pairs ).submit( @service )
+    def update_metadata( embed_code, attrs = {} )
+      CustomMetadataRequest.new( embed_code, attrs ).submit( @service )
     end
   end
 end

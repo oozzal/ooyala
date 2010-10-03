@@ -2,7 +2,7 @@ require File.dirname( __FILE__ ) + '/helper'
 
 class ThumbnailQueryTest < OoyalaTest
   def test_request_returns_promo_and_thumbnails
-    item = @client.query( { 'limit' => 1, 'contentType' => 'Video' } ).items.first
+    item = @client.query( :limit => 1, :content_type => :Video ).items.first
 
     request = ThumbnailQueryRequest.new( item.embed_code )
     response = request.submit( @service )

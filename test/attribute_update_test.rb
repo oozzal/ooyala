@@ -22,7 +22,7 @@ class AttributeUpdateTest < OoyalaTest
   end
 
   def test_sets_title_and_description
-    request = QueryRequest.new( 'limit' => 1 )
+    request = QueryRequest.new :limit => 1
     item = @service.submit( request ).items.first
 
     embed_code = item.embed_code
@@ -37,7 +37,7 @@ class AttributeUpdateTest < OoyalaTest
 
     @service.submit request
 
-    request = QueryRequest.new( 'embedCode' => embed_code, 'limit' => 1 )
+    request = QueryRequest.new :embed_code => embed_code, :limit => 1
     item = @service.submit( request ).items.first
 
     assert_equal( title, item.title )
