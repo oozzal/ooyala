@@ -29,6 +29,23 @@ module Ooyala
       self.max_index = params[ :max_index ] || 255
     end
 
-  end
+  private
 
+    def response_class
+      ThumbnailQueryResponse
+    end
+
+    def path_segment
+      'thumbnails'
+    end
+
+    def params
+      {
+        'embedCode' => embed_code,
+        'range' => "#{ min_index }-#{ max_index }",
+        'resolution' => "#{ desired_width }x#{ desired_height }"
+      }
+    end  
+
+  end
 end

@@ -1,7 +1,7 @@
 module Ooyala
   class Client
-    def initialize( ooyala_service )
-      @service = ooyala_service
+    def initialize( account )
+      @account = account
     end
 
     def find( embed_code )
@@ -9,19 +9,19 @@ module Ooyala
     end
 
     def query( criteria )
-      QueryRequest.new( criteria ).submit( @service )
+      QueryRequest.new( criteria ).submit( @account )
     end
 
     def query_thumbnails( embed_code, options = {} )
-      ThumbnailQueryRequest.new( embed_code, options ).submit( @service )
+      ThumbnailQueryRequest.new( embed_code, options ).submit( @account )
     end
 
     def update_attributes( embed_code, params )
-      AttributeUpdateRequest.new( embed_code, params ).submit( @service )
+      AttributeUpdateRequest.new( embed_code, params ).submit( @account )
     end
 
     def update_metadata( embed_code, attrs = {}, delete_names = [] )
-      CustomMetadataRequest.new( embed_code, attrs, delete_names ).submit( @service )
+      CustomMetadataRequest.new( embed_code, attrs, delete_names ).submit( @account )
     end
   end
 end

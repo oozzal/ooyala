@@ -119,6 +119,57 @@ module Ooyala
       end
       @order_direction = value
     end
-  end
 
+  private
+
+    def response_class
+      QueryResponse
+    end
+
+    def path_segment
+      'query'
+    end
+
+    def params
+      params = {
+        'contentType' => content_type,
+        'description' => description,
+        'title' => title,
+        'text' => title_or_description,
+        'limit' => limit,
+        'pageID' => page,
+        'queryMode' => mode,
+        'includeDeleted' => format_bool( return_deleted ),
+        'updatedAfter' => updated_after && updated_after.to_i,
+        'statistics' => format_list( statistics_time_periods ),
+        'status' => format_list( statuses ),
+        'embedCode' => format_list( embed_codes ),
+        'orderBy' => order_param,
+        'fields' => fields_param
+      }.reject { |k, v| v.nil? }
+
+      labels.each do |label|
+        params[ "label[#{ label }]" ] = ''
+      end
+
+      params
+    end
+
+    def fields_param
+      fields = []
+      fields << 'labels' if return_labels
+      fields << 'metadata' if return_metadata
+      fields << 'ratings' if return_ratings
+      format_list fields
+    end
+
+    def order_param
+      return nil unless order_by && order_direction
+
+      ( order_by == :uploaded_at ? 'uploadedAt' : 'updatedAt' ) +
+        ', ' +
+        order_direction.to_s
+    end
+
+  end
 end

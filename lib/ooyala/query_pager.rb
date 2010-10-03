@@ -2,8 +2,8 @@ module Ooyala
 
   class QueryPager
 
-    def initialize( service, criteria = {}, page_size = 500 )
-      @service = service
+    def initialize( account, criteria = {}, page_size = 500 )
+      @account = account
       @criteria = criteria
       @page_size = page_size
       reset
@@ -24,7 +24,7 @@ module Ooyala
       criteria = @criteria.merge 'limit' => @page_size,
         'pageID' => @page_id
 
-      response = QueryRequest.new( criteria ).submit( @service )
+      response = QueryRequest.new( criteria ).submit( @account )
 
       # Ooyala does not return the next page ID when the page size is larger
       # than the recordset size

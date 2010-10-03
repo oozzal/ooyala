@@ -16,6 +16,25 @@ module Ooyala
       self.delete_names = delete_names
     end
 
-  end
+  private
 
+    def response_class
+      CustomMetadataResponse
+    end
+
+    def path_segment
+      'set_metadata'
+    end
+
+    def params
+      params = attrs.merge 'embedCode' => embed_code
+
+      unless delete_names.empty?
+        params[ 'delete' ] = delete_names.join( "\0" )
+      end
+
+      params
+    end
+
+  end
 end

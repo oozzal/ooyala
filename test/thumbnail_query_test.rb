@@ -5,7 +5,7 @@ class ThumbnailQueryTest < OoyalaTest
   def test_raises_on_invalid_embed_code
     request = ThumbnailQueryRequest.new( 'invalid_embed_code' )
     assert_raise( Ooyala::ItemNotFound ) do
-      request.submit( @service )
+      request.submit( @account )
     end
   end
 
@@ -13,7 +13,7 @@ class ThumbnailQueryTest < OoyalaTest
     item = @client.query( :limit => 1, :content_type => :Video ).items.first
 
     request = ThumbnailQueryRequest.new( item.embed_code )
-    response = request.submit( @service )
+    response = request.submit( @account )
 
     assert response.is_a?( ThumbnailQueryResponse )
     assert response.aspect_ratio.is_a? Rational

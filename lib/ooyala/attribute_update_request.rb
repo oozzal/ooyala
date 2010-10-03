@@ -39,6 +39,27 @@ module Ooyala
       end
     end
 
-  end
+  private
 
+    def response_class
+      AttributeUpdateResponse
+    end
+
+    def path_segment
+      'edit'
+    end
+
+    def params
+      {
+        'embedCode' => embed_code,
+        'title' => title,
+        'description' => description,
+        'flightEnd' => flight_end && format_time( flight_end ),
+        'flightStart' => flight_start && format_time( flight_start ),
+        'status' => status && status.to_s,
+        'hostedAt' => hosted_at
+      }.reject { |k, v| v.nil? }
+    end  
+
+  end
 end

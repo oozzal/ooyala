@@ -6,8 +6,8 @@ class OoyalaTest < Test::Unit::TestCase
   SECRET_CODE = 'hn-Rw2ZH-YwllUYkklL5Zo_7lWJVkrbShZPb5CD1'
 
   def setup
-    @service = Ooyala::Service.new( PARTNER_CODE, SECRET_CODE )
-    @client = Ooyala::Client.new( @service )
+    @account = Account.new( PARTNER_CODE, SECRET_CODE )
+    @client = Client.new( @account )
   end
 
   # Test::Unit requires at least one test in a test class
@@ -15,11 +15,6 @@ class OoyalaTest < Test::Unit::TestCase
   end
 
 private
-
-  # shortcut
-  def submit( request )
-    @service.submit( request )
-  end
 
   def find_item
     @client.query( :limit => 1 ).items.first
