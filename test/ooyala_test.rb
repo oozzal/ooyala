@@ -21,4 +21,8 @@ private
     @service.submit( request )
   end
 
+  def find_item
+    @client.query( :limit => 1 ).items.first
+  end
+
 end

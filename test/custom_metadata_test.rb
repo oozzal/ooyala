@@ -10,20 +10,12 @@ class CustomMetadataTest < OoyalaTest
   end
 
   def test_sets_single_pair
-    request = QueryRequest.new :limit => 1
-    item = @service.submit( request ).items.first
+    key, value = 'test_key', 'test_value'
+    embed_code = find_item.embed_code
 
-    embed_code = item.embed_code
-    key = 'test_key'
-    value = 'test_value'
+    CustomMetadataRequest.new( embed_code, key => value ).submit( @service )
 
-    request = CustomMetadataRequest.new( embed_code, { key => value } )
-    @service.submit request
-
-    request = QueryRequest.new :embed_code => embed_code, :limit => 1
-    item = @service.submit( request ).items.first
-
-    assert_equal( value, item.metadata[ key ] )
+    assert_equal value, @client.find( embed_code ).metadata[ key ]
   end
 
 end
