@@ -1,20 +1,22 @@
 module Ooyala
 
-  class ResponseParser
+  class HttpResponseParser
 
     def self.create( request )
-      case request
+      klass = case request
       when AttributeUpdateRequest
-        AttributeUpdateResponseParser.new
+        AttributeUpdateHttpResponseParser
       when CustomMetadataRequest
-        CustomMetadataResponseParser.new
+        CustomMetadataHttpResponseParser
       when QueryRequest
-        QueryResponseParser.new
+        QueryHttpResponseParser
       when ThumbnailQueryRequest
-        ThumbnailQueryResponseParser.new
+        ThumbnailQueryHttpResponseParser
       else
         raise ParseError, "Can't create response parser for request type '#{ request.class.name }'"
       end
+
+      klass.new
     end
 
     def parse( http_response )
@@ -107,7 +109,7 @@ module Ooyala
     end
   end
 
-  class AttributeUpdateResponseParser < ResponseParser
+  class AttributeUpdateHttpResponseParser < HttpResponseParser
     def parse( http_response )
       unless http_response.is_a?( Net::HTTPOK )
         raise_unrecognized_response http_response
@@ -121,7 +123,7 @@ module Ooyala
     end 
   end
 
-  class CustomMetadataResponseParser < ResponseParser
+  class CustomMetadataHttpResponseParser < HttpResponseParser
 
     # Success: HTTP 200 with response body:
     #   <?xml version="1.0"?>
@@ -144,7 +146,7 @@ module Ooyala
     end
   end
 
-  class QueryResponseParser < ResponseParser
+  class QueryHttpResponseParser < HttpResponseParser
 
     def parse( http_response )
       el = parse_standard_response( http_response )
@@ -191,7 +193,7 @@ module Ooyala
     end
   end
 
-  class ThumbnailQueryResponseParser < ResponseParser
+  class ThumbnailQueryHttpResponseParser < HttpResponseParser
 
     def parse( http_response )
       el = parse_standard_response( http_response )

@@ -12,10 +12,11 @@ module Ooyala
 
     def submit( request )
       http_response = Net::HTTP.start( HOST, PORT ) do |http|
-        http.request HttpRequestBuilder.create( request, self ).build
+        http.request HttpRequestBuilder.create( request, self ).build 
       end
 
-      ResponseParser.create( request ).parse http_response
+      HttpResponseParser.create( request ).parse( http_response )
     end
+
   end
 end
