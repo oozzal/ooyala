@@ -59,6 +59,12 @@ module Ooyala
       Time.at string.to_i
     end
 
+    def parse_fraction( string )
+      match = /\A(\d+)\/(\d+)\Z/.match( string )
+      raise( ParseError, "Can't parse fraction: '#{ string }'" ) unless match
+      Rational match[ 1 ].to_i, match[ 2 ].to_i
+    end
+
     def child_content( node, child_name )
       child = node.at( "./#{ child_name }" )
       child && child.content
@@ -191,7 +197,7 @@ module Ooyala
       el = parse_standard_response( http_response )
 
       response = ThumbnailQueryResponse.new :embed_code => parse_string_attr( el, 'embedCode' ),
-        :aspect_ratio => parse_string_attr( el, 'aspectRatio' ),
+        :aspect_ratio => parse_fraction( attr_value( el, 'aspectRatio' ) ),
         :requested_width => parse_int_attr( el, 'requestedWidth' ),
         :estimated_width => parse_int_attr( el, 'estimatedWidth' ),
         :promo_thumbnail_url => parse_string_child( el, 'promoThumbnail' )

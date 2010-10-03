@@ -16,6 +16,7 @@ class ThumbnailQueryTest < OoyalaTest
     response = request.submit( @service )
 
     assert response.is_a?( ThumbnailQueryResponse )
+    assert response.aspect_ratio.is_a? Rational
     assert_equal item.embed_code, response.embed_code
     assert_not_nil response.promo_thumbnail_url
 
