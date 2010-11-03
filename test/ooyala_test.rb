@@ -1,12 +1,10 @@
 class OoyalaTest < Test::Unit::TestCase
   include Ooyala
 
-  # Ooyala test account
-  PARTNER_CODE = 'lsNTrbQBqCQbH-VA6ALCshAHLWrV'
-  SECRET_CODE = 'hn-Rw2ZH-YwllUYkklL5Zo_7lWJVkrbShZPb5CD1'
-
   def setup
-    @service = Service.new PARTNER_CODE, SECRET_CODE
+    # Ooyala test account
+    @service = Service.new 'lsNTrbQBqCQbH-VA6ALCshAHLWrV',
+      'hn-Rw2ZH-YwllUYkklL5Zo_7lWJVkrbShZPb5CD1'
   end
 
   # Test::Unit requires at least one test in a test class
