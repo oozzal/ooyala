@@ -1,31 +1,32 @@
+require 'rubygems'
 require 'base64'
 require 'cgi'
 require 'digest/sha2'
 require 'net/http'
 require 'rational'
-
-gem 'nokogiri'
 require 'nokogiri'
-
-gem 'activesupport'
 require 'active_support'
 
-require File.dirname( __FILE__ ) + '/ooyala/parsing'
-require File.dirname( __FILE__ ) + '/ooyala/formatting'
-require File.dirname( __FILE__ ) + '/ooyala/version'
-require File.dirname( __FILE__ ) + '/ooyala/error'
-require File.dirname( __FILE__ ) + '/ooyala/request'
-require File.dirname( __FILE__ ) + '/ooyala/response'
-require File.dirname( __FILE__ ) + '/ooyala/query_request'
-require File.dirname( __FILE__ ) + '/ooyala/query_response'
-require File.dirname( __FILE__ ) + '/ooyala/custom_metadata_request'
-require File.dirname( __FILE__ ) + '/ooyala/custom_metadata_response'
-require File.dirname( __FILE__ ) + '/ooyala/attribute_update_request'
-require File.dirname( __FILE__ ) + '/ooyala/attribute_update_response'
-require File.dirname( __FILE__ ) + '/ooyala/thumbnail_query_request'
-require File.dirname( __FILE__ ) + '/ooyala/thumbnail_query_response'
-require File.dirname( __FILE__ ) + '/ooyala/query_iterator'
-require File.dirname( __FILE__ ) + '/ooyala/query_pager'
-require File.dirname( __FILE__ ) + '/ooyala/item'
-require File.dirname( __FILE__ ) + '/ooyala/thumbnail'
-require File.dirname( __FILE__ ) + '/ooyala/service'
+%w{
+  parsing
+  formatting
+  version
+  error
+  request
+  response
+  query_request
+  query_response
+  custom_metadata_request
+  custom_metadata_response
+  attribute_update_request
+  attribute_update_response
+  thumbnail_query_request
+  thumbnail_query_response
+  query_iterator
+  query_pager
+  item
+  thumbnail
+  service
+}.each do |file|
+  require "#{ File.dirname( __FILE__ ) }/ooyala/#{ file }"
+end
