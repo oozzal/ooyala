@@ -30,3 +30,11 @@ require 'active_support'
 }.each do |file|
   require "#{ File.dirname( __FILE__ ) }/ooyala/#{ file }"
 end
+
+module Ooyala
+
+  class << self
+    attr_accessor :service
+  end
+
+end
