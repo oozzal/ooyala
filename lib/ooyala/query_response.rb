@@ -35,7 +35,7 @@ module Ooyala
     private
 
       def parse_query_item( el )
-        item = QueryItem.new :embed_code => parse_string_child( el, 'embedCode' ),
+        item = Item.new :embed_code => parse_string_child( el, 'embedCode' ),
           :title => parse_string_child( el, 'title' ),
           :description => parse_string_child( el, 'description' ),
           :status => parse_string_child( el, 'status' ),
@@ -44,7 +44,8 @@ module Ooyala
           :size => parse_int_child( el, 'size' ),
           :length => parse_int_child( el, 'length' ),
           :hosted_at => parse_string_child( el, 'hostedAt' ),
-          :updated_at => parse_time_child( el, 'updatedAt' )
+          :updated_at => parse_time_child( el, 'updatedAt' ),
+          :content_type => parse_string_child( el, 'content_type' )
 
         el.xpath( './metadata/metadataItem' ).each do |el_metadata_item|
           name, value = parse_metadata_item( el_metadata_item )

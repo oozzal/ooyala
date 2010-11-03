@@ -1,9 +1,10 @@
 module Ooyala
 
   class QueryPager
+    include Enumerable
 
-    def initialize( account, criteria = {}, page_size = 500 )
-      @account = account
+    def initialize( service, criteria = {}, page_size = 500 )
+      @service = service
       @criteria = criteria
       @page_size = page_size
       reset
@@ -21,10 +22,10 @@ module Ooyala
     def succ
       raise 'EOF' if eof?
 
-      criteria = @criteria.merge 'limit' => @page_size,
-        'pageID' => @page_id
+      criteria = @criteria.merge :limit => @page_size,
+        :page_id => @page_id
 
-      response = QueryRequest.new( criteria ).submit( @account )
+      response = @service.query( criteria )
 
       # Ooyala does not return the next page ID when the page size is larger
       # than the recordset size
@@ -38,11 +39,10 @@ module Ooyala
       response
     end
 
-    def each_page
-      raise "No block" unless block_given?
+    def each
       reset
       yield succ until eof?
     end
-  end
 
+  end
 end

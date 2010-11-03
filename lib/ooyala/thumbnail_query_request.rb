@@ -29,8 +29,6 @@ module Ooyala
       self.max_index = params[ :max_index ] || 255
     end
 
-  private
-
     def response_class
       ThumbnailQueryResponse
     end

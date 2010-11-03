@@ -16,8 +16,6 @@ module Ooyala
       self.delete_names = delete_names
     end
 
-  private
-
     def response_class
       CustomMetadataResponse
     end

@@ -1,5 +1,4 @@
 module Ooyala
-
   class ThumbnailQueryResponse < Response
 
     attr_reader :thumbnails

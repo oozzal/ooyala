@@ -120,8 +120,6 @@ module Ooyala
       @order_direction = value
     end
 
-  private
-
     def response_class
       QueryResponse
     end
@@ -154,6 +152,8 @@ module Ooyala
 
       params
     end
+
+  private
 
     def fields_param
       fields = []

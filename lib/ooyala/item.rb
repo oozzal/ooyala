@@ -1,6 +1,6 @@
 module Ooyala
 
-  class QueryItem
+  class Item
 
     attr_reader :metadata
 
@@ -13,7 +13,8 @@ module Ooyala
       :size,
       :length, # duration
       :hosted_at,
-      :updated_at
+      :updated_at,
+      :content_type
 
     def initialize( attrs = {} )
       @metadata = {}

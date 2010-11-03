@@ -1,4 +1,5 @@
 module Ooyala
+
   class Error < StandardError
   end
 

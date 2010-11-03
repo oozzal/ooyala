@@ -3,17 +3,15 @@ require File.dirname( __FILE__ ) + '/helper'
 class ThumbnailQueryTest < OoyalaTest
 
   def test_raises_on_invalid_embed_code
-    request = ThumbnailQueryRequest.new( 'invalid_embed_code' )
     assert_raise( Ooyala::ItemNotFound ) do
-      request.submit( @account )
+      @service.query_thumbnails 'invalid_embed_code'
     end
   end
 
   def test_request_returns_promo_and_thumbnails
-    item = @client.query( :limit => 1, :content_type => :Video ).items.first
+    item = @service.query( :limit => 1, :content_type => :Video ).items.first
 
-    request = ThumbnailQueryRequest.new( item.embed_code )
-    response = request.submit( @account )
+    response = @service.query_thumbnails( item.embed_code )
 
     assert response.is_a?( ThumbnailQueryResponse )
     assert response.aspect_ratio.is_a? Rational
@@ -25,4 +23,5 @@ class ThumbnailQueryTest < OoyalaTest
     assert thumbnail.is_a?( Thumbnail )
     assert_not_nil thumbnail.url
   end
+
 end

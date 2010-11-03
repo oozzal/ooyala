@@ -39,8 +39,6 @@ module Ooyala
       end
     end
 
-  private
-
     def response_class
       AttributeUpdateResponse
     end

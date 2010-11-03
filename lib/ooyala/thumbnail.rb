@@ -1,5 +1,4 @@
 module Ooyala
-
   class Thumbnail
 
     # URL of the thumbnail image
@@ -16,6 +15,6 @@ module Ooyala
         send "#{k}=", v
       end
     end
-  end
 
+  end
 end
