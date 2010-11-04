@@ -9,7 +9,7 @@ module Ooyala
     end
 
     def each
-      QueryPager.new( @service, @criteria ).each_page do |page|
+      QueryPager.new( @service, @criteria ).each do |page|
         page.items.each do |item|
           yield item
         end
