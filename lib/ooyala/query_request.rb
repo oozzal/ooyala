@@ -45,7 +45,7 @@ module Ooyala
     attr_accessor :limit
 
     # Zero-based index of the page to return (default 0)
-    attr_accessor :page
+    attr_accessor :page_id
 
     # Operator to use when evaluating multiple criteria (+:and+ or +:or+,
     # default +:and+)
@@ -73,7 +73,7 @@ module Ooyala
 
       [ :content_type, :description, :title, :title_or_description,
         :return_labels, :return_metadata, :return_ratings, :return_deleted,
-        :limit, :page, :mode, :updated_after ].each do |key|
+        :limit, :page_id, :mode, :updated_after ].each do |key|
         if criteria.include?( key )
           send "#{ key }=", criteria[ key ]
         end
@@ -135,7 +135,7 @@ module Ooyala
         'title' => title,
         'text' => title_or_description,
         'limit' => limit,
-        'pageID' => page,
+        'pageID' => page_id,
         'queryMode' => mode,
         'includeDeleted' => format_bool( return_deleted ),
         'updatedAfter' => updated_after && updated_after.to_i,

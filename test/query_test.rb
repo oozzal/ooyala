@@ -9,7 +9,7 @@ class QueryTest < OoyalaTest
 
   def test_raises_on_invalid_page_id
     assert_raise( Ooyala::Error ) do
-      @service.query :page => -1
+      @service.query :page_id => -1
     end
   end
 
