@@ -82,7 +82,7 @@ module Ooyala
       [ :labels, :embed_codes, :statuses, :statistics_time_periods ].each do |key|
         if criteria.include?( key )
           array = send( key )
-          array += criteria[ :key ]
+          array.concat criteria[ key ]
         end
       end
 
