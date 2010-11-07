@@ -13,11 +13,13 @@ module Ooyala
     end
 
     def parse_int_child( node, child_name )
-      parse_int child_content( node, child_name )
+      content = child_content( node, child_name )
+      content && parse_int( content )
     end
 
     def parse_time_child( node, child_name )
-      parse_time child_content( node, child_name )
+      content = child_content( node, child_name )
+      content && parse_time( content )
     end
 
     def parse_string_attr( node, attr_name )
@@ -25,7 +27,8 @@ module Ooyala
     end
 
     def parse_int_attr( node, attr_name )
-      parse_int attr_value( node, attr_name )
+      value = attr_value( node, attr_name )
+      value && parse_int( value )
     end
 
     def parse_int( string )
