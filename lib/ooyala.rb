@@ -10,7 +10,6 @@ require 'active_support'
 %w{
   parsing
   formatting
-  version
   error
   request
   response

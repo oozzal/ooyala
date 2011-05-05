@@ -1,10 +1,8 @@
 # -*- encoding: utf-8 -*-
 
-require 'lib/ooyala/version'
-
 Gem::Specification.new do |s|
   s.name        = 'ooyala'
-  s.version     = Ooyala::VERSION
+  s.version     = '0.1.6'
   s.platform    = Gem::Platform::RUBY
   s.authors     = [ 'Jonah Burke' ]
   s.email       = [ 'jonah@bigthink.com' ]
