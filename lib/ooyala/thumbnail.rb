@@ -9,6 +9,11 @@ module Ooyala
 
     # Zero-based index (ordinal) of the thumbnail
     attr_accessor :index
+    
+    # Height and width of the thumbnail, in pixels
+    attr_accessor :height
+    attr_accessor :width
+    
 
     def initialize( attrs = {} )
       attrs.each do |k, v|

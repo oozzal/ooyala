@@ -26,6 +26,7 @@ require 'active_support'
   item
   thumbnail
   service
+  stream
 }.each do |file|
   require "#{ File.dirname( __FILE__ ) }/ooyala/#{ file }"
 end

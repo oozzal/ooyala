@@ -3,6 +3,9 @@ module Ooyala
 
     # Labels; multiple are ANDed
     attr_reader :labels
+    
+    # Fields: zero or more of :streams, :metadata, :ratings, :labels
+    attr_reader :fields
 
     # Embed codes
     attr_reader :embed_codes
@@ -29,15 +32,6 @@ module Ooyala
     # Text in the title or description
     attr_accessor :title_or_description
 
-    # Whether to return lables (default true)
-    attr_accessor :return_labels
-
-    # Whether to return metadata (default true)
-    attr_accessor :return_metadata
-
-    # Whether to return ratings (default true)
-    attr_accessor :return_ratings
-
     # Whether to return content deleted in the last 30 days (default false)
     attr_accessor :return_deleted
 
@@ -62,24 +56,21 @@ module Ooyala
 
     def initialize( criteria = {} )
       @labels = []
+      @fields = []
       @embed_codes = []
       @statuses = []
       @statistics_time_periods = []
 
-      @return_labels = true
-      @return_metadata = true
-      @return_ratings = true
       @return_deleted = false
 
       [ :content_type, :description, :title, :title_or_description,
-        :return_labels, :return_metadata, :return_ratings, :return_deleted,
-        :limit, :page_id, :mode, :updated_after ].each do |key|
+        :return_deleted, :limit, :page_id, :mode, :updated_after ].each do |key|
         if criteria.include?( key )
           send "#{ key }=", criteria[ key ]
         end
       end
 
-      [ :labels, :embed_codes, :statuses, :statistics_time_periods ].each do |key|
+      [ :labels, :fields, :embed_codes, :statuses, :statistics_time_periods ].each do |key|
         if criteria.include?( key )
           array = send( key )
           array.concat criteria[ key ]
@@ -143,7 +134,7 @@ module Ooyala
         'status' => format_list( statuses ),
         'embedCode' => format_list( embed_codes ),
         'orderBy' => order_param,
-        'fields' => fields_param
+        'fields' => format_list( fields )
       }.reject { |k, v| v.nil? }
 
       labels.each do |label|
@@ -154,14 +145,6 @@ module Ooyala
     end
 
   private
-
-    def fields_param
-      fields = []
-      fields << 'labels' if return_labels
-      fields << 'metadata' if return_metadata
-      fields << 'ratings' if return_ratings
-      format_list fields
-    end
 
     def order_param
       return nil unless order_by && order_direction
