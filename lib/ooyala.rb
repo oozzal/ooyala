@@ -7,6 +7,10 @@ require 'rational'
 require 'nokogiri'
 require 'active_support'
 
+if ActiveSupport::VERSION::MAJOR == 3
+  require 'active_support/core_ext'
+end
+
 %w{
   parsing
   formatting
