@@ -64,7 +64,7 @@ module Ooyala
       @return_deleted = false
 
       [ :content_type, :description, :title, :title_or_description,
-        :return_deleted, :limit, :page_id, :mode, :updated_after ].each do |key|
+        :return_deleted, :limit, :page_id, :mode, :updated_after, :order_by, :order_direction ].each do |key|
         if criteria.include?( key )
           send "#{ key }=", criteria[ key ]
         end
@@ -101,7 +101,7 @@ module Ooyala
       unless [ :uploaded_at, :updated_at ].include?( value )
         raise ArgumentError, "Invalid order_by: '#{ value }'"
       end
-      @order_by = order_by
+      @order_by = value
     end
 
     def order_direction=( value )
@@ -150,7 +150,7 @@ module Ooyala
       return nil unless order_by && order_direction
 
       ( order_by == :uploaded_at ? 'uploadedAt' : 'updatedAt' ) +
-        ', ' +
+        ',' +
         order_direction.to_s
     end
 
